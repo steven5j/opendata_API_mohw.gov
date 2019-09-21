@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Document</title>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/datatables.min.css" />
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/datatables.min.js"></script>
+
+</head>
+<body>
+
+
+  <div class="w-75 mx-auto">
+    <h1>衛生福利部評鑑合格之醫院名單</h1>資料來源：<a href="https://data.gov.tw/dataset/6271">政府資料開放平台-衛生福利部評鑑合格之醫院名單</a>
+    <hr/>
+    <table id="dt" class="table table-success table-hover">
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>所在縣市</th>
+          <th>醫院名稱</th>
+          <th>醫院評鑑評鑑結果</th>
+          <th>教學醫院評鑑結果</th>
+          <th>醫院評鑑合格效期</th>
+          <th>教學醫院合格效期</th>
+          <th>醫院電話</th>
+          <th>地址</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    var data;
+      $.getJSON('https://apiservice.mol.gov.tw/OdService/download/A17000000J-020028-D0U').done(function(re){
+        console.log(re);
+        data = re;
+
+
+
+        /*處理各區域的資訊*/
+        let print = '';
+        for (let i = 0; i < data.length; i++) {
+          print += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${data[i].所在縣市}</td>
+            <td>${data[i].醫院名稱}</td>
+            <td>${data[i].醫院評鑑評鑑結果}</td>
+            <td>${data[i].教學醫院評鑑結果}</td>
+            <td>${data[i].醫院評鑑合格效期}</td>
+            <td>${data[i].教學醫院合格效期}</td>
+            <td>${data[i].醫院電話}</td>
+            <td>${data[i].地址}</td>
+          </tr>
+        `;
+        }
+
+
+        $('tbody').html(print);
+
+$('#dt').DataTable();
+
+      }).fail(function(gg){
+alert('api串接失敗');
+      });
+  
+  
+  </script>
+</body>
+</html>
